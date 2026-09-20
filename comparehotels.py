@@ -13,13 +13,22 @@ st.markdown("Use the filters on the left sidebar to narrow down choices based on
 def load_hotel_data():
     data = {
         "Hotel Name": ["The Grand Luminary", "Urban Oasis Suites", "Coastal Crest Resort", "The Heritage Inn", "Metro Horizon Stay"],
-        "Neighborhood": ["Downtown", "Arts District", "Beachfront", "Historic Quarter", "Financial District"],
+        "Street": ["Downtown", "Arts District", "Beachfront", "Historic Quarter", "Financial District"],
+        "District": [],
         "Price ($/Night)": [280, 195, 340, 150, 210],
         "Star Rating": [4.8, 4.5, 4.9, 4.2, 4.4],
-        "Pool": [True, True, True, False, False],
-        "Free Breakfast": [True, False, True, True, False],
-        "Gym": [True, True, False, False, True],
-        "Free Wi-Fi": [True, True, True, True, True]
+        "Review": [],
+        "Lift :elevator:": []
+        "Breakfast :ramen:": [True, False, True, True, False],
+        "Microwave :hotsprings:": [True, True, False, False, True],
+        "Free Wi-Fi :signal_strength:": [True, True, True, True, True],
+        "Website": [
+            "https://marriott.com",
+            "https://hilton.com",
+            "https://hyatt.com",
+            "https://ihg.com",
+            "https://fourseasons.com"
+        ]
     }
     return pd.DataFrame(data)
 
@@ -35,18 +44,22 @@ budget = st.sidebar.slider("Maximum Price per Night ($)", min_price, max_price, 
 
 # Amenity checkboxes
 st.sidebar.subheader("Required Amenities")
-req_pool = st.sidebar.checkbox("Pool")
-req_breakfast = st.sidebar.checkbox("Free Breakfast")
-req_gym = st.sidebar.checkbox("Gym")
+req_lift = st.sidebar.checkbox("Lift")
+req_breakfast = st.sidebar.checkbox("Breakfast")
+req_microwave = st.sidebar.checkbox("Microwave")
+req_wifi = st.sidebar.checkbox("Free Wi-Fi")
+
 
 # 3. Filtering the Data Logic
 filtered_df = df[df["Price ($/Night)"] <= budget]
-if req_pool:
-    filtered_df = filtered_df[filtered_df["Pool"] == True]
+if req_lift:
+    filtered_df = filtered_df[filtered_df["Lift"] == True]
 if req_breakfast:
-    filtered_df = filtered_df[filtered_df["Free Breakfast"] == True]
-if req_gym:
-    filtered_df = filtered_df[filtered_df["Gym"] == True]
+    filtered_df = filtered_df[filtered_df["Breakfast"] == True]
+if req_microwave:
+    filtered_df = filtered_df[filtered_df["Microwave"] == True]
+if req_wifi:
+    filtered_df = filtered_df[filtered_df["Free Wifi"] == True]
 
 # 4. Display Overview Metric Cards
 st.subheader("Quick Overview")
@@ -60,34 +73,25 @@ else:
     kpi3.metric(label="Top Rated Option", value="N/A")
 
 st.markdown("---")
+st.subheader("📋 Available Hotel Profiles")
 
-# 5. Interactive Comparison Table & Price Visuals
 if filtered_df.empty:
-    st.warning("No hotels match your current filter combination. Try loosening your budget or amenity criteria!")
+    st.warning("No hotels match your filters.")
 else:
-    col1, col2 = st.columns([3, 2])
-    
-    with col1:
-        st.subheader("📋 Hotel Features Matrix")
-        # Format true/false values into clean checkmarks for client readability
-        display_df = filtered_df.copy()
-        for amenity in ["Pool", "Free Breakfast", "Gym", "Free Wi-Fi"]:
-            display_df[amenity] = display_df[amenity].apply(lambda x: "✅" if x else "❌")
-        
-        st.dataframe(display_df, use_container_width=True, hide_index=True)
-
-    with col2:
-        st.subheader("💰 Price vs. Rating Value")
-        # Generate chart to show client value optimization
-        fig = px.scatter(
-            filtered_df, 
-            x="Price ($/Night)", 
-            y="Star Rating", 
-            text="Hotel Name",
-            size=[15]*len(filtered_df), 
-            color="Neighborhood",
-            hover_name="Hotel Name",
-            labels={"Price ($/Night)": "Price ($/Night)", "Star Rating": "Guest Rating (Out of 5)"}
-        )
-        fig.update_traces(textposition='top center')
-        st.plotly_chart(fig, use_container_width=True)
+    # Text-only card layout
+    for index, row in filtered_df.iterrows():
+        with st.container(border=True):
+            # Header info
+            st.subheader(row["Hotel Name"])
+            st.caption(f"📍 Location: {row['Neighborhood']} | ⭐ Rating: {row['Star Rating']}/5")
+            st.markdown(f"### **${row['Price ($/Night)']}** / night")
+            
+            # Amenities row
+            lift_status = "✅ Lift" if row["Lift"] else "❌ No Lift"
+            bfast_status = "✅ Breakfast" if row["Breakfast"] else "❌ No Breakfast"
+            micro_status = "✅ Microwave" if row["Microwave"] else "❌ No Microwave"
+            wifi_status = "✅ Free Wi-Fi" if row["Free Wi-Fi"] else "❌ No Wi-Fi"
+            st.markdown(f"{lift_status}  •  {bfast_status}  •  {micro_status}  •  {wifi_status}")
+            
+            # Clickable website link button
+            st.link_button(label="🔗 View Hotel Website", url=row["Website"])

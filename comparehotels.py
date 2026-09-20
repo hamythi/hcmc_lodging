@@ -14,11 +14,11 @@ def load_hotel_data():
     data = {
         "Hotel Name": ["The Grand Luminary", "Urban Oasis Suites", "Coastal Crest Resort", "The Heritage Inn", "Metro Horizon Stay"],
         "Street": ["Downtown", "Arts District", "Beachfront", "Historic Quarter", "Financial District"],
-        "District": [],
+        "District": [5,6,10,11,5],
         "Price ($/Night)": [280, 195, 340, 150, 210],
         "Star Rating": [4.8, 4.5, 4.9, 4.2, 4.4],
-        "Review": [],
-        "Lift :elevator:": []
+        "Review": [10,20,30,40,50],
+        "Lift :elevator:": [True, False, True, True, False],
         "Breakfast :ramen:": [True, False, True, True, False],
         "Microwave :hotsprings:": [True, True, False, False, True],
         "Free Wi-Fi :signal_strength:": [True, True, True, True, True],

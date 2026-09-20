@@ -83,7 +83,7 @@ else:
         with st.container(border=True):
             # Header info
             st.subheader(row["Hotel Name"])
-            st.caption(f"📍 Location: {row['Neighborhood']} | ⭐ Rating: {row['Star Rating']}/5")
+            st.caption(f"📍 Location: {row['Street']} | ⭐ Rating: {row['Star Rating']}/5")
             st.markdown(f"### **${row['Price ($/Night)']}** / night")
             
             # Amenities row

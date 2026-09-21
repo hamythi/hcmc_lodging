@@ -98,7 +98,7 @@ else:
             # Header info
             st.subheader(row["Hotel Name"])
             st.caption(f"📍 Location: {row['Street']} | ⭐ Rating: {row['Star Rating']}/10 | Review: {row['Review']}")
-            st.caption(f"Year: {row['Street']}")
+            st.caption(f"Year: {row['Year']}")
             st.markdown(f"### **${row['Price ($/Night)']}** / night")
             
             # Amenities row

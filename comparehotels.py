@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 # Set up clean, professional page layout
-st.set_page_config(page_title="Hotel Comparison Dashboard", layout="wide")
+st.set_page_config(page_title="Hotel Comparison Dashboard", layout="wide") 
 
 st.title("🏨 Hotel Comparison Dashboard")
 st.markdown("Use the filters on the left sidebar to narrow down choices based on budget and must-have amenities.")

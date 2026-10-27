@@ -12,7 +12,7 @@ st.markdown("Use the filters on the left sidebar to narrow down choices based on
 @st.cache_data
 def load_hotel_data():
     data = {
-        "Hotel Name": ["Golda Hotel", "Zazz Urban Ho Chi Minh Hotel", 
+        "Hotel Name": ["Golda Hotel", "Zazz Urban HCMC Hotel", 
                        "Tuong Vi", "Hong Phat", "Everich Infinity - China Town Apartment", 
                        "DHTS Business Hotel & Apartment"],
         "Street": ["Thuan Kieu", "An Dong, Cho Lon & Pho Co Dieu", 
